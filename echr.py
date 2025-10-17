@@ -411,27 +411,6 @@ def extract_parts(train_path, violation, part): #extract text from different par
         D = extract_text(starts, ends, cases, violation)
     return D
 
-### Functions for running individual articles
-def train_model_cross_val(Xtrain, Ytrain, vec, clf, debug=False, cv=10, n_jobs=-1): #Linear SVC model cross-validation
-    if debug: print('***10-fold cross-validation***')
-    pipeline = Pipeline([
-        ('features', FeatureUnion(
-            [vec],
-        )),
-        ('classifier', clf)
-        ])
-    Ypredict = cross_val_predict(pipeline, Xtrain, Ytrain, cv=cv, n_jobs=n_jobs) #10-fold cross-validation
-    # return evaluate(Ytrain, Ypredict, debug=debug)
-    return return_metrics(Ytrain, Ypredict)
-
-def evaluate(Ytest, Ypredict, debug=False): #evaluate the model (accuracy, precision, recall, f-score, confusion matrix)
-        acc = accuracy_score(Ytest, Ypredict)
-        if debug:
-            print('Accuracy:', acc)
-            print('\nClassification report:\n', classification_report(Ytest, Ypredict))
-            print('\nCR:', precision_recall_fscore_support(Ytest, Ypredict, average='macro'))
-            print('\nConfusion matrix:\n', confusion_matrix(Ytest, Ypredict), '\n\n_______________________\n\n')
-        return acc
 
 def extract_full_text(case_dict):
     def collect_content(elements):
